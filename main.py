@@ -62,12 +62,17 @@ print('==> Building model..')
 # net = ResNeXt29_2x64d()
 # net = MobileNet()
 # net = MobileNetV2()
+net = torch.hub.load('pytorch/vision:v0.6.0', 'mobilenet_v2', pretrained=False)
+n_inputs = net.classifier[1].in_features
+n_classes = 10
+last_layer = nn.Linear(n_inputs, n_classes)
+net.classifier[1] = last_layer
 # net = DPN92()
 # net = ShuffleNetG2()
 # net = SENet18()
 # net = ShuffleNetV2(1)
 # net = EfficientNetB0()
-net = RegNetX_200MF()
+# net = RegNetX_200MF()
 net = net.to(device)
 if device == 'cuda':
     net = torch.nn.DataParallel(net)
